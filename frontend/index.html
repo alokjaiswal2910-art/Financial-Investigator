@@ -1,0 +1,16 @@
+<!doctype html><html><head><meta charset="utf-8"><title>FinSight - Investigator Portal</title><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css"></head><body>
+<div class="nav"><div><b>FinSight</b><small>Financial Crime &amp; Insider Risk Intelligence</small></div><a href="#login"><button>Investigator login</button></a></div>
+<section class="hero"><div><h1>See the whole story behind every transfer.</h1>
+<p>Suspicious money movements and unusual employee activity are usually reviewed by separate teams. FinSight links employees, access rights, accounts and transactions into one investigation &mdash; with explainable, evidence-backed alerts instead of an opaque score.</p></div>
+<form class="login" id="login" onsubmit="return go(event)"><h2>Investigator sign in</h2><div class="mu">Authorised compliance staff only</div>
+<label>Username</label><input id="u" autocomplete="username" required><label>Password</label><input id="p" type="password" autocomplete="current-password" required>
+<button class="p">Sign in</button><div class="err" id="err"></div><div class="hint">Demo credentials: <b>investigator</b> / <b>finsight123</b></div></form></section>
+<section class="feat"><div><b>Investigation seeds</b>Screening flags leads for a human to accept or dismiss &mdash; never a verdict.</div><div><b>Activity reconstruction</b>Related actions and transactions grouped into activities with their own timeline.</div><div><b>Explainable rules</b>Every finding shows rule, condition, observed values, policy and evidence IDs.</div><div><b>Money-flow graph &amp; report</b>Visual flows, risk charts and a Word report for reviewers.</div></section>
+<div class="flow">Flow: <span>Seed</span>&rarr;<span>Investigation</span>&rarr;<span>Activities</span>&rarr;<span>Rule findings</span>&rarr;<span>Evidence &amp; graph</span>&rarr;<span>Case report (.docx)</span></div>
+<script src="config.js"></script><script>
+if (sessionStorage.getItem("fs")) location = "dashboard.html";
+async function go(e) { e.preventDefault(); $err = document.getElementById("err"); $err.textContent = "";
+  try { const r = await fetch(API + "/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ username: u.value, password: p.value }) }), d = await r.json();
+    if (!r.ok) { $err.textContent = d.error; return false; } sessionStorage.setItem("fs", JSON.stringify(d)); location = "dashboard.html";
+  } catch { $err.textContent = "Cannot reach the backend on port 5000. Is it running?"; } return false; }
+</script></body></html>
